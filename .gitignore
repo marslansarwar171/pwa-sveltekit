@@ -1,5 +1,6 @@
 .DS_Store
 article.md
+markdown-syntax.md
 node_modules
 /build
 /.svelte-kit
