@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte";
   import "../app.css";
   import CtAs from "../components/CTAs.svelte";
   import Footer from "../components/Footer.svelte";
@@ -13,6 +14,24 @@
       $openModal = false;
       window.location.href = href;
   }
+
+  async function detectSWUpdate() {
+    const registration = await navigator.serviceWorker.ready
+    registration.addEventListener('updatefound', () => {
+        const newSW = registration.installing
+        newSW?.addEventListener('statechange', () => {
+            if(newSW.state==='installed') {
+                if(confirm('New update available!')) {
+                    newSW.postMessage({type: 'SKIP_WAITING'})
+                    window.location.reload()
+                }
+            }
+        })
+    })
+  }
+  onMount(() => {
+    detectSWUpdate()
+  })
 </script>
 
 {#if $openModal}
